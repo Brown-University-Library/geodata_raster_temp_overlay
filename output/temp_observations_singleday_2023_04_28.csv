@@ -1,0 +1,11 @@
+OBS_NUM,OBS_NAME,OBS_DATE,RASTER_ROW,RASTER_COL,RASTER_FILE,TEMP
+0,alfa,1/5/2020,24,56,clipped_PRISM_tmean_stable_4kmD2_20200105_bil.tif,4.4300003
+1,bravo,1/31/2020,27,53,clipped_PRISM_tmean_stable_4kmD2_20200131_bil.tif,-2.5600002
+2,charlie,1/15/2020,26,56,clipped_PRISM_tmean_stable_4kmD2_20200115_bil.tif,3.1590002
+3,delta,2/10/2020,34,57,clipped_PRISM_tmean_stable_4kmD2_20200210_bil.tif,2.0654
+4,echo,2/5/2020,24,56,clipped_PRISM_tmean_stable_4kmD2_20200205_bil.tif,5.0088997
+5,foxtrot,1/15/2020,25,55,clipped_PRISM_tmean_stable_4kmD2_20200115_bil.tif,2.9970002
+6,golf,1/16/2020,25,55,clipped_PRISM_tmean_stable_4kmD2_20200116_bil.tif,4.132
+7,hotel,1/31/2020,28,55,clipped_PRISM_tmean_stable_4kmD2_20200131_bil.tif,-1.7450001
+8,india,2/1/2020,21,53,clipped_PRISM_tmean_stable_4kmD2_20200201_bil.tif,0.70489997
+9,julliett,2/20/2020,21,53,clipped_PRISM_tmean_stable_4kmD2_20200220_bil.tif,0.0804
