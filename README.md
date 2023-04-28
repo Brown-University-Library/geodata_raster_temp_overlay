@@ -68,6 +68,4 @@ Three tests were conducted in QGIS to insure that the results generated from the
 
 3. The script was run with '*temp_many_days*' set to True, to pull observations for a seven day time period (observation day plus six preceding days). The relevant rasters were displayed for two specific observation points, each of the seven temperatures in the script output were checked manually against the appropriate raster for each date, and the average was calculated by hand and compared to the output. Two sample points were checked: point '*hotel*' was chosen to represent a normal case with 7 days of temperature data, while point '*alfa*' was chosen because it was missing rasters for given dates (observation date was 1/5/2020, and sample rasters do not precede 1/1/2020). All data points for these two observations were verified and matched. In addition, points '*foxtrot*' and '*golf*' were created using identical coordinates and thus are in the same grid location, but their observations dates are one day apart. The range of observations for these points matched correctly as being one day out of step, where TEMP for *foxtrot* (obs date 1/15) is equal to TMINUS_1 for *golf*  (obs date 1/16, so one day before is 1/15).
 
-```
-![Temp Point Overlay in QGIS with Output Results](qgis_raster_temp_example.png "QGIS Temp Overlay")
-```
+![Raster Temp and Point Overlay in QGIS](S:\_geodata\projects\raster_temp_overlay\qgis_raster_temp_example.png)
