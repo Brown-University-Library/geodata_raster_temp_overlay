@@ -10,7 +10,7 @@ Assumes points and rasters share the same coordinate system (NAD 83).
 PRISM Climate Data: https://www.prism.oregonstate.edu/
 
 Frank Donnelly / GIS and Data Librarian / Brown University
-April 19, 2023
+April 19, 2023 / revised March 4, 2024
 """
 import os
 import matplotlib.pyplot as plt
@@ -44,7 +44,10 @@ for point in point_data['geometry']:
     y = point.y
     row, col = raster.index(x,y)
     print("Point correspond to row, col: %d, %d"%(row,col))
-    print("Raster value on point %.2f \n"%raster.read(1)[row,col])
+    if any ([row < 0, row > raster.height, col < 0, col > raster.width]):
+        print("Out of bounds at %d, %d \n"%(row,col))
+    else:
+        print("Raster value on point %.2f \n"%raster.read(1)[row,col])
     
 point_data['temp']=raster.read(1)[raster.index(point_data['geometry'].x,point_data['geometry'].y)]
 

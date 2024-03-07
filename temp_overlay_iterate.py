@@ -11,7 +11,7 @@ and that rasters share the same resolution and extent.
 PRISM Climate Data: https://www.prism.oregonstate.edu/
 
 Frank Donnelly / GIS and Data Librarian / Brown University
-April 19, 2023 / revised April 28, 2023
+April 19, 2023 / revised March 4, 2024
 """
 import os,csv,rasterio
 import matplotlib.pyplot as plt
@@ -22,7 +22,7 @@ from datetime import timedelta
 from datetime import date
 
 #Calculate temps over multiple previous days from observation?
-temp_many_days=True # True or False
+temp_many_days=False # True or False
 date_range=(1,7) # Range of past dates 
 
 #Inputs
@@ -77,12 +77,18 @@ for idx in point_data.index:
         xcoord=point_data['geometry'][idx].x
         ycoord=point_data['geometry'][idx].y
         row, col = raster.index(xcoord,ycoord)
-        tempval=raster.read(1)[row,col]
-        rfile=os.path.split(obs_raster)[1]
-        record=[point_data[obnum][idx],point_data[obname][idx],
+        if any ([row < 0, row > raster.height, col < 0, col > raster.width]):
+            inbnds=False # Coordinates out of bounds of raster
+            record=[point_data[obnum][idx],point_data[obname][idx],
+                    point_data[obdate][idx],row,col,None,None]
+        else:
+            inbnds=True
+            tempval=raster.read(1)[row,col]
+            rfile=os.path.split(obs_raster)[1]
+            record=[point_data[obnum][idx],point_data[obname][idx],
                 point_data[obdate][idx],row,col,rfile,tempval]
     # Optional block, if pulling past dates
-        if temp_many_days==True:
+        if temp_many_days==True and inbnds==True:
             old_temps=[]
             for d in range(date_range[0],date_range[1]):
                 past_date=obs_date-timedelta(days=d) # iterate through days, subtracting
@@ -101,6 +107,13 @@ for idx in point_data.index:
             avg_temp=sum(all_temps)/len(all_temps)
             old_temps.extend([temp_range,avg_temp])
             record.extend(old_temps)
+            result_list.append(record)
+        elif temp_many_days==True and inbnds==False:
+            no_temps=[]
+            for d in range(date_range[0],date_range[1]):
+                no_temps.append(None)
+            no_temps.extend([None,None])
+            record.extend(no_temps)
             result_list.append(record)
         else: # if NOT doing many days, just append data for observation day
             result_list.append(record)
