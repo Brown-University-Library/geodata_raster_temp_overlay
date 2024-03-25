@@ -11,7 +11,7 @@ and that rasters share the same resolution and extent.
 PRISM Climate Data: https://www.prism.oregonstate.edu/
 
 Frank Donnelly / GIS and Data Librarian / Brown University
-April 19, 2023 / revised March 4, 2024
+April 19, 2023 / revised March 25, 2024
 """
 import os,csv,rasterio
 import matplotlib.pyplot as plt
@@ -39,9 +39,15 @@ obdate='OBS_DATE'
 
 rf_dict={} # Create dictionary of dates and raster file names
 
+varname='' # To store whether raster is min, max, avg temp or precip
+varsaved=False
+
 for rf in os.listdir(raster_dir):
     if rf.endswith('.tif'):
-        rfdatestr=rf.split('_')[5]
+        if varsaved==False:
+            varname=rf.split('_')[2] #var name stored in this position
+            varsaved=True
+        rfdatestr=rf.split('_')[5] #date stored in this position
         rfdate=dt.strptime(rfdatestr,'%Y%m%d').date() #format of dates is 20200131
         rfpath=os.path.join(raster_dir,rf)
         rf_dict[rfdate]=rfpath
@@ -52,14 +58,14 @@ for rf in os.listdir(raster_dir):
 point_data = gpd.read_file(point_file)
 
 result_list=[]
-result_list.append(['OBS_NUM','OBS_NAME','OBS_DATE','RASTER_ROW','RASTER_COL','RASTER_FILE','TEMP'])
+result_list.append(['OBS_NUM','OBS_NAME','OBS_DATE','RASTER_ROW','RASTER_COL','RASTER_FILE','{}'.format(varname).upper()])
 
 if temp_many_days==True:
     for d in range(date_range[0],date_range[1]):
         tcol='TMINUS_'+str(d)
         result_list[0].append(tcol)
-    result_list[0].append('TEMP_RANGE')
-    result_list[0].append('AVG_TEMP')
+    result_list[0].append('RANGE')
+    result_list[0].append('AVG')
     temp_ftype='multiday_'
 else:
     temp_ftype='singleday_'
@@ -126,7 +132,7 @@ point_data.plot(ax=ax, color='black')
 show(raster, ax=ax)
 
 today=str(date.today()).replace('-','_')
-outfile='temp_observations_'+temp_ftype+today+'.csv'
+outfile='temp_observations_'+varname+'_'+temp_ftype+today+'.csv'
 outpath=os.path.join(outfolder,outfile)
 
 with open(outpath, 'w', newline='') as writefile:
